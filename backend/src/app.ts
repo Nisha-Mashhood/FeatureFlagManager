@@ -1,9 +1,12 @@
 import express, { Application } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-
 import { appConfig } from "@/config/app.config";
 import { corsConfig } from "@/config/cors.config";
+import router from "./routes";
+import { API_PREFIX } from "@/constants/routes";
+import { notFoundMiddleware } from "./middlewares/not-found.middleware";
+import { errorMiddleware } from "./middlewares/error.middleware";
 
 export class App {
     private readonly app: Application;
@@ -12,6 +15,8 @@ export class App {
         this.app = express();
 
         this.registerMiddlewares();
+        this.registerRoutes();
+        this.registerErrorHandlers();
     }
 
     private registerMiddlewares(): void {
@@ -31,6 +36,15 @@ export class App {
         );
 
         this.app.use(cookieParser());
+    }
+
+    private registerRoutes(): void {
+        this.app.use(API_PREFIX,router)
+    } 
+
+    private registerErrorHandlers(): void {
+        this.app.use(notFoundMiddleware);
+        this.app.use(errorMiddleware);
     }
 
     public getApp(): Application {
