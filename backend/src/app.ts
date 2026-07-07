@@ -16,7 +16,7 @@ export class App {
 
         this.registerMiddlewares();
         this.registerRoutes();
-        this.registerErrorHandlers();
+        this.registerExceptionHandlers();
     }
 
     private registerMiddlewares(): void {
@@ -39,10 +39,10 @@ export class App {
     }
 
     private registerRoutes(): void {
-        this.app.use(API_PREFIX,router)
+        this.app.use(API_PREFIX, router)
     } 
 
-    private registerErrorHandlers(): void {
+    private registerExceptionHandlers(): void {
         this.app.use(notFoundMiddleware);
         this.app.use(errorMiddleware);
     }
