@@ -6,9 +6,13 @@ import { IOrganizationService } from "@/interfaces/services/i-organization-servi
 import { HttpError } from "@/errors/http-error";
 import { STATUS_CODE } from "@/constants/status-codes";
 import { ORGANIZATION_MESSAGES } from "@/constants/organization-message";
+import { inject, injectable } from "inversify";
+import { TYPES } from "@/di/identifiers";
 
+@injectable()
 export class OrganizationService implements IOrganizationService {
   constructor(
+    @inject(TYPES.OrganizationRepository)
     private readonly organizationRepository: IOrganizationRepository,
   ) {}
 

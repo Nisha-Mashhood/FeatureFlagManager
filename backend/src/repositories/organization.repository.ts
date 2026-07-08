@@ -4,7 +4,9 @@ import { IOrganization } from "@/interfaces/models/i-organization";
 import { IOrganizationRepository } from "@/interfaces/repositories/i-organization-repository";
 import { OrganizationModel } from "@/models/organization.model";
 import { IPaginationQuery } from "@/interfaces/common/i-pagination-query";
+import { injectable } from "inversify";
 
+@injectable()
 export class OrganizationRepository implements IOrganizationRepository {
     private readonly organizationModel = OrganizationModel;
 

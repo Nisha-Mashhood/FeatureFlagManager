@@ -1,7 +1,7 @@
 import { Role } from "@/constants/roles";
 
 export interface IUser {
-    _id?: string;
+    id?: string;
 
     name: string;
 
@@ -10,6 +10,8 @@ export interface IUser {
     password: string;
 
     role: Role;
+
+    isApproved: boolean;
 
     organizationId?: string;
 

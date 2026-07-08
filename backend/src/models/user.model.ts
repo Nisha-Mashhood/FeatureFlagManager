@@ -29,6 +29,11 @@ const userSchema = new Schema<IUser>(
             required: true,
         },
 
+        isApproved: {
+            type: Boolean,
+            default: false,
+        },
+
         organizationId: {
             type: Schema.Types.ObjectId,
             ref: "Organization",

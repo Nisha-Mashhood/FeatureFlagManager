@@ -1,17 +1,28 @@
 import { Router } from "express";
-
-import { dependencies } from "@/di/dependencies";
 import { OrganizationValidator } from "@/validators/organization.validator";
 import { validateRequest } from "@/middlewares/validation.middleware";
+import { IOrganizationController } from "@/interfaces/controllers/i-organization-controller";
+import { TYPES } from "@/di/identifiers";
+import { resolve } from "@/di/resolver";
+import { authenticate } from "@/middlewares/auth.middleware";
+import { authorize } from "@/middlewares/authorize.middleware";
+import { ROLE } from "@/constants/roles";
 
 const organizationRouter = Router();
 
+const organizationController =
+    resolve<IOrganizationController>(
+        TYPES.OrganizationController,
+    );
+
 organizationRouter.post(
     "/",
+    authenticate,
+    authorize(ROLE.SUPER_ADMIN),
      OrganizationValidator.createOrganization(),
         validateRequest,
-    dependencies.organizationController.createOrganization.bind(
-        dependencies.organizationController,
+    organizationController.createOrganization.bind(
+        organizationController,
     ),
 );
 
@@ -19,8 +30,8 @@ organizationRouter.get(
     "/",
     OrganizationValidator.getOrganizations(),
     validateRequest,
-    dependencies.organizationController.getOrganizations.bind(
-        dependencies.organizationController,
+    organizationController.getOrganizations.bind(
+        organizationController,
     ),
 );
 
@@ -28,8 +39,8 @@ organizationRouter.get(
     "/:organizationId",
     OrganizationValidator.getOrganizationById(),
     validateRequest,
-    dependencies.organizationController.getOrganizationById.bind(
-        dependencies.organizationController,
+    organizationController.getOrganizationById.bind(
+        organizationController,
     ),
 );
 

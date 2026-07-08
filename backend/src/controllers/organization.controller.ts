@@ -3,12 +3,16 @@ import { AbstractController } from "@/controllers/abstract-controller";
 import { IOrganizationController } from "@/interfaces/controllers/i-organization-controller";
 import { IOrganizationService } from "@/interfaces/services/i-organization-service";
 import { ORGANIZATION_MESSAGES } from "@/constants/organization-message";
+import { inject, injectable } from "inversify";
+import { TYPES } from "@/di/identifiers";
 
+@injectable()
 export class OrganizationController
     extends AbstractController
     implements IOrganizationController {
 
     constructor(
+        @inject(TYPES.OrganizationService)
         private readonly organizationService: IOrganizationService,
     ) {
         super();
