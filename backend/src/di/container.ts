@@ -24,6 +24,12 @@ import { IUserService } from "@/interfaces/services/i-user-service";
 import { UserService } from "@/services/user.service";
 import { IUserController } from "@/interfaces/controllers/i-user-controller";
 import { UserController } from "@/controllers/user.controller";
+import { IFeatureFlagRepository } from "@/interfaces/repositories/i-feature-flag-repository";
+import { FeatureFlagRepository } from "@/repositories/feature-flag.repository";
+import { IFeatureFlagService } from "@/interfaces/services/i-feature-flag-service";
+import { FeatureFlagService } from "@/services/feature-flag.service";
+import { IFeatureFlagController } from "@/interfaces/controllers/i-feature-flag-controller";
+import { FeatureFlagController } from "@/controllers/feature-flag.controller";
 
 const container = new Container();
 
@@ -34,6 +40,10 @@ container
 
 container.bind<IUserRepository>(TYPES.UserRepository).to(UserRepository);
 
+container
+  .bind<IFeatureFlagRepository>(TYPES.FeatureFlagRepository)
+  .to(FeatureFlagRepository);
+
 // Services
 container
   .bind<IOrganizationService>(TYPES.OrganizationService)
@@ -43,6 +53,10 @@ container.bind<IAuthService>(TYPES.AuthService).to(AuthService);
 
 container.bind<IUserService>(TYPES.UserService).to(UserService);
 
+container
+  .bind<IFeatureFlagService>(TYPES.FeatureFlagService)
+  .to(FeatureFlagService);
+
 // Controllers
 container
   .bind<IOrganizationController>(TYPES.OrganizationController)
@@ -51,5 +65,9 @@ container
 container.bind<IAuthController>(TYPES.AuthController).to(AuthController);
 
 container.bind<IUserController>(TYPES.UserController).to(UserController);
+
+container
+  .bind<IFeatureFlagController>(TYPES.FeatureFlagController)
+  .to(FeatureFlagController);
 
 export { container };

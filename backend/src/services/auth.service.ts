@@ -27,10 +27,11 @@ export class AuthService implements IAuthService {
     private readonly organizationRepository: IOrganizationRepository,
   ) {}
 
-  private generateTokens(userId: string, role: Role) {
+  private generateTokens(userId: string, role: Role, organizationId?: string) {
     const payload = {
       userId,
       role,
+      organizationId,
     };
 
     return {
@@ -65,7 +66,7 @@ export class AuthService implements IAuthService {
       );
     }
 
-    const tokens = this.generateTokens("super-admin", ROLE.SUPER_ADMIN);
+    const tokens = this.generateTokens("super-admin", ROLE.SUPER_ADMIN, undefined,);
 
     return {
       user: {
@@ -102,7 +103,7 @@ export class AuthService implements IAuthService {
       );
     }
   }
-  
+
   private async validatePassword(
     plainPassword: string,
     hashedPassword: string,
@@ -129,7 +130,7 @@ export class AuthService implements IAuthService {
 
     await this.validatePassword(loginDto.password, user.password);
 
-    const tokens = this.generateTokens(user.id!, user.role);
+    const tokens = this.generateTokens(user.id!, user.role, user.organizationId?.toString(),);
 
     return {
       user: this.mapUserToAuthUserDto(user),
