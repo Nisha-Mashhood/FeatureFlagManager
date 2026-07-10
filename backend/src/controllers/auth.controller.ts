@@ -44,17 +44,51 @@ export class AuthController
     }
   }
 
-  public async signup(
+  public async signupOrganizationAdmin(
     req: Request,
     res: Response,
     next: NextFunction,
   ): Promise<void> {
     try {
-      await this.authService.signup(req.body);
+      await this.authService.signupOrganizationAdmin(req.body);
 
       this.created(res, undefined, "Registration successful.");
     } catch (error) {
       next(error);
     }
+  }
+
+  public async signupEndUser(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      await this.authService.signupEndUser(req.body);
+
+      this.created(res, undefined, "Registration successful.");
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async logout(
+    _req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      await this.authService.logout();
+
+      CookieUtil.clearAuthCookies(res);
+
+      this.ok(res, undefined, AUTH_MESSAGES.LOGOUT_SUCCESS);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async me(req: Request, res: Response): Promise<void> {
+    this.ok(res, req.user, "Authenticated.");
   }
 }

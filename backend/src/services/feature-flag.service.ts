@@ -33,7 +33,7 @@ export class FeatureFlagService implements IFeatureFlagService {
 
   private mapToResponseDto(featureFlag: IFeatureFlag): IFeatureFlagResponseDto {
     return {
-      id: featureFlag.id!,
+      id: featureFlag._id!,
       name: featureFlag.name,
       key: featureFlag.key,
       description: featureFlag.description,

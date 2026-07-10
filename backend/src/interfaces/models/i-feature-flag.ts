@@ -3,7 +3,7 @@ import { Types } from "mongoose";
 import { Environment } from "@/constants/environment";
 
 export interface IFeatureFlag {
-    id?: string;
+    _id?: string;
 
     name: string;
 

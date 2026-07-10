@@ -43,7 +43,7 @@ export class AuthService implements IAuthService {
 
   private mapUserToAuthUserDto(user: IUser): IAuthUserDto {
     return {
-      id: user.id!,
+      id: user._id!,
       name: user.name,
       email: user.email,
       role: user.role,
@@ -66,7 +66,11 @@ export class AuthService implements IAuthService {
       );
     }
 
-    const tokens = this.generateTokens("super-admin", ROLE.SUPER_ADMIN, undefined,);
+    const tokens = this.generateTokens(
+      "super-admin",
+      ROLE.SUPER_ADMIN,
+      undefined,
+    );
 
     return {
       user: {
@@ -130,7 +134,11 @@ export class AuthService implements IAuthService {
 
     await this.validatePassword(loginDto.password, user.password);
 
-    const tokens = this.generateTokens(user.id!, user.role, user.organizationId?.toString(),);
+    const tokens = this.generateTokens(
+      user._id!,
+      user.role,
+      user.organizationId?.toString(),
+    );
 
     return {
       user: this.mapUserToAuthUserDto(user),
@@ -176,7 +184,24 @@ export class AuthService implements IAuthService {
     }
   }
 
-  private async createOrganizationAdmin(signupDto: ISignupDto): Promise<void> {
+  // private async createOrganizationAdmin(signupDto: ISignupDto): Promise<void> {
+  //   const hashedPassword = await PasswordUtil.hashPassword(signupDto.password);
+
+  //   await this.userRepository.create({
+  //     name: signupDto.name,
+  //     email: signupDto.email,
+  //     password: hashedPassword,
+  //     organizationId: signupDto.organizationId,
+  //     role: ROLE.ORGANIZATION_ADMIN,
+  //     isApproved: false,
+  //   });
+  // }
+
+  private async createUser(
+    signupDto: ISignupDto,
+    role: Role,
+    isApproved: boolean,
+  ): Promise<void> {
     const hashedPassword = await PasswordUtil.hashPassword(signupDto.password);
 
     await this.userRepository.create({
@@ -184,16 +209,36 @@ export class AuthService implements IAuthService {
       email: signupDto.email,
       password: hashedPassword,
       organizationId: signupDto.organizationId,
-      role: ROLE.ORGANIZATION_ADMIN,
-      isApproved: false,
+      role,
+      isApproved,
     });
   }
 
-  public async signup(signupDto: ISignupDto): Promise<void> {
+  // public async signup(signupDto: ISignupDto): Promise<void> {
+  //   await this.ensureOrganizationExists(signupDto.organizationId);
+
+  //   await this.ensureEmailIsUnique(signupDto.email);
+
+  //   await this.createOrganizationAdmin(signupDto);
+  // }
+
+  public async signupOrganizationAdmin(signupDto: ISignupDto): Promise<void> {
     await this.ensureOrganizationExists(signupDto.organizationId);
 
     await this.ensureEmailIsUnique(signupDto.email);
 
-    await this.createOrganizationAdmin(signupDto);
+    await this.createUser(signupDto, ROLE.ORGANIZATION_ADMIN, false);
+  }
+
+  public async signupEndUser(signupDto: ISignupDto): Promise<void> {
+    await this.ensureOrganizationExists(signupDto.organizationId);
+
+    await this.ensureEmailIsUnique(signupDto.email);
+
+    await this.createUser(signupDto, ROLE.END_USER, true);
+  }
+
+  public async logout(): Promise<void> {
+    return;
   }
 }

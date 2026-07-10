@@ -40,7 +40,7 @@ featureFlagRouter.get(
 featureFlagRouter.get(
   "/evaluate/:key",
   authenticate,
-  authorize(ROLE.ORGANIZATION_ADMIN),
+  authorize(ROLE.END_USER),
   FeatureFlagValidator.evaluateFeatureFlag(),
   validateRequest,
   featureFlagController.evaluateFeatureFlag.bind(featureFlagController),

@@ -14,9 +14,9 @@ export class FeatureFlagValidator {
         .trim()
         .notEmpty()
         .withMessage("Feature flag key is required.")
-        .matches(/^[a-z0-9-]+$/)
+        .matches(/^[a-z0-9-_]+$/)
         .withMessage(
-          "Feature flag key can only contain lowercase letters, numbers and hyphens.",
+          "Feature flag key can only contain lowercase letters, numbers, underscore and hyphens.",
         ),
 
       body("rolloutPercentage")

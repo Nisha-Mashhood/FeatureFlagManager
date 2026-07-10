@@ -19,7 +19,7 @@ export class UserService implements IUserService {
 
   private mapPendingUser(user: IUser): IPendingUserDto {
     return {
-      id: user.id!,
+      id: user._id!,
       name: user.name,
       email: user.email,
       organizationId: user.organizationId!,
@@ -27,7 +27,7 @@ export class UserService implements IUserService {
   }
   public async getPendingUsers(): Promise<IPendingUserDto[]> {
     const users = await this.userRepository.findPendingUsers();
-
+    // console.log("Pending users :",users)
     return users.map((user) => this.mapPendingUser(user));
   }
 
